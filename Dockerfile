@@ -1,8 +1,11 @@
 ######## 构建 ########
-FROM --platform=${BUILDPLATFORM:-amd64} node:12.16.3-alpine3.11 as builder
+FROM --platform=${BUILDPLATFORM:-amd64} node:12.22.12-alpine as builder
+
+# 替换镜像源
+# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 
 # 安装构建工具
-RUN apk add --update --no-cache ca-certificates curl wget cmake build-base git bash python make gcc g++ zlib-dev autoconf automake file nasm \
+RUN apk add --update --no-cache ca-certificates curl wget cmake build-base git bash python3 make gcc g++ zlib-dev autoconf automake file nasm \
   && update-ca-certificates
 
 # YApi 版本
@@ -45,7 +48,7 @@ RUN rm -rf /yapi/scripts
 
 
 ######## 镜像 ########
-FROM node:12.16.3-alpine3.11
+FROM node:12.22.12-alpine
 
 WORKDIR /yapi
 
